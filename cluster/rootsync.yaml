@@ -1,0 +1,16 @@
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: root-sync-ns
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  git:
+    # If you fork this repo, change the url to point to your fork
+    repo: https://github.com/600lyy/Build-KRM-Platform.git
+    # If you move the configs to a different branch, update the branch here
+    branch: main
+    dir: namespaces
+    auth: token
+    secretRef:
+      name: git-creds
