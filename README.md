@@ -31,7 +31,17 @@ git push -u orighin main
 
 ## Repo Hierarchy
 **Central Root Repo (`Build-KRM-Platform/cluster/`):**
-
+```bash
+├── apply-spec.yaml
+├── cluster
+│   └── rootsync.yaml
+├── install.sh
+├── namespaces
+│   ├── admin.yaml
+│   ├── alpha.yaml
+│   └── beta.yaml
+└── README.md
+```
 
 **RootSync**
 RootSync let you sync cluster-scoped and namespace-scoped configs
@@ -75,8 +85,9 @@ Should display "SYNCD" for all clusters with the latest commit SHA.
  ```
 
  Should include:
- - infra-admin
- - infra-dev
+ - admin
+ - alpha
+ - beta
 
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
@@ -93,7 +104,7 @@ Expected result:
  kubetctl get ns infra-dev -o yaml
 
 NAME        STATUS   AGE
-infra-dev   Active   1s
+alpha   Active   1s
 ```
 
 You can see Config Sync re-creates the namespace on your behalf, to make sure the consistency between your current state with desired state across all clusters.

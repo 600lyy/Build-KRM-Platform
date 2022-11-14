@@ -65,13 +65,13 @@ gcloud beta container hub config-management enable
 # Replace GITHUB_USERNAME for policy repo in install "apply_spec"
 sed -i "s/GITHUB_USERNAME/${GITHUB_USERNAME}/g" apply-spec.yaml
 
-# Install Config Sync on admin, dev, and prod
+# Install Config Sync on clusters
 
 register_cluster "admin" "europe-north1-a"
 install_config_sync "admin" "europe-north1-a"
 
-#register_cluster "dev" "europe-north1-a"
-#install_config_sync "dev" "europe-north1-a"
+register_cluster "prod-eu" "europe-north1-a"
+install_config_sync "prod-eu" "europe-north1-a"
 
-#register_cluster "prod" "europe-north1-a"
-#install_config_sync "prod" "europe-north1-a"
+register_cluster "prod-us" "us-central1-a"
+install_config_sync "prod-us" "us-central1-a"
