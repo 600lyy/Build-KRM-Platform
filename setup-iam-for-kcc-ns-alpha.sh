@@ -1,11 +1,22 @@
 #!/bin/sh
 # https://cloud.google.com/config-connector/docs/how-to/advanced-install#namespaced-mode
 
-# In this demo examplem, host project and managed project are one project
+# In this demo examplem, host project and managed project are one project. The project is linked to 
+# namespace alpha
 
 
 if [[ -z "$PROJECT_ID" ]]; then
     echo "Must provide PROJECT_ID in environment" 1>&2
+    exit 1
+fi
+
+if [[ -z "$GITHUB_USERNAME" ]]; then
+    echo "Must provide GITHUB_USERNAME in environment" 1>&2
+    exit 1
+fi
+
+if [[ -z "$GITHUB_TOKEN" ]]; then
+    echo "Must provide Github Personal Access Token (PAT) in environment" 1>&2
     exit 1
 fi
 
@@ -32,7 +43,20 @@ setup_sa_for_kcc () {
         --role="roles/iam.workloadIdentityUser"
 }
 
+create_git_secret () {
+    CLUSTER_NAME=$1 
+    
+    echo "********** Creating Secret in alpha namespace to grant Config Sync access to your repos: $CLUSTER_NAME ***************"
+    kubectl ctx $CLUSTER_NAME
+
+    kubectl create secret generic git-creds \
+        --namespace="alpha" \
+        --from-literal=username=$GITHUB_USERNAME \
+        --from-literal=token=$GITHUB_TOKEN
+}
+
 setup_sa_for_kcc
+create_git_secret "admin"
 
 echo "✅ Finished setting up service account and necessary permissions for kcc in the host project $PROJECT_ID."
 
