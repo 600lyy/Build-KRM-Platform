@@ -33,14 +33,30 @@ git push -u orighin main
 **Central Root Repo (`Build-KRM-Platform/cluster/`):**
 ```bash
 ├── apply-spec.yaml
+├── backups
+│   ├── admin.yaml
+│   ├── alpha.yaml
+│   ├── beta.yaml
+│   ├── configconnectorcontext.yaml
+│   ├── configconnector.yaml
+│   ├── install.sh
+│   └── reposync-alpha.yaml
 ├── cluster
+│   ├── reposync-alpha.yaml
+│   ├── reposync-iam
+│   │   ├── alpha-configconnectorcontext.yaml
+│   │   └── alpha-rolebinding.yaml
+│   ├── rootsync-kcc.yaml
 │   └── rootsync.yaml
+├── gcp-resources
+│   └── alpha
+├── install-config-connector.sh
 ├── install.sh
 ├── namespaces
 │   ├── admin.yaml
-│   ├── alpha.yaml
-│   └── beta.yaml
-└── README.md
+│   └── alpha.yaml
+├── README.md
+└── setup-iam-for-kcc-ns-alpha.sh
 ```
 
 **RootSync**
