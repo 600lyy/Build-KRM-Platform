@@ -3,6 +3,8 @@
  metadata:
    name: repo-sync-rolebinding
    namespace: alpha
+   annotations: 
+    configsync.gke.io/cluster-name-selector: admin
  subjects:
  - kind: ServiceAccount
    name: ns-reconciler-alpha

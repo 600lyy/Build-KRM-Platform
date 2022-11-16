@@ -4,5 +4,7 @@ metadata:
   # you can only have one ConfigConnectorContext per namespace
   name: configconnectorcontext.core.cnrm.cloud.google.com
   namespace: alpha
+  annotations: 
+    configsync.gke.io/cluster-name-selector: admin
 spec:
   googleServiceAccount: "kcc-sa-alpha@k8s-lab-322711.iam.gserviceaccount.com"
