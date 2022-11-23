@@ -32,31 +32,28 @@ git push -u orighin main
 ## Repo Hierarchy
 **Central Root Repo (`Build-KRM-Platform/cluster/`):**
 ```bash
+.
 ├── apply-spec.yaml
 ├── backups
 │   ├── admin.yaml
-│   ├── alpha.yaml
-│   ├── beta.yaml
 │   ├── configconnectorcontext.yaml
-│   ├── configconnector.yaml
 │   ├── install.sh
-│   └── reposync-alpha.yaml
-├── cluster
-│   ├── reposync-alpha.yaml
+│   ├── newyork.yaml
 │   ├── reposync-iam
-│   │   ├── alpha-configconnectorcontext.yaml
-│   │   └── alpha-rolebinding.yaml
-│   ├── rootsync-kcc.yaml
+│   │   ├── stockholm-configconnectorcontext.yaml
+│   │   └── stockholm-rolebinding.yaml
+│   ├── reposync-stockholm.yaml
+│   └── stockholm.yaml
+├── cluster
 │   └── rootsync.yaml
+├── configconnector.yaml
 ├── gcp-resources
-│   └── alpha
+│   └── stockholm
 ├── install-config-connector.sh
 ├── install.sh
 ├── namespaces
-│   ├── admin.yaml
-│   └── alpha.yaml
 ├── README.md
-└── setup-iam-for-kcc-ns-alpha.sh
+└── setup-iam-for-kcc-ns-sthlm.sh
 ```
 
 **RootSync**
@@ -102,7 +99,7 @@ Should display "SYNCD" for all clusters with the latest commit SHA.
 
  Should include:
  - admin
- - alpha
+ - stockholm
  - beta
 
 ## Attempt to delete a namespace from the cluster
@@ -120,7 +117,7 @@ Expected result:
  kubetctl get ns infra-dev -o yaml
 
 NAME        STATUS   AGE
-alpha   Active   1s
+stockholm   Active   1s
 ```
 
 You can see Config Sync re-creates the namespace on your behalf, to make sure the consistency between your current state with desired state across all clusters.

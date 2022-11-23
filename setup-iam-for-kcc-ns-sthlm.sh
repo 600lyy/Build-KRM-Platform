@@ -2,7 +2,7 @@
 # https://cloud.google.com/config-connector/docs/how-to/advanced-install#namespaced-mode
 
 # In this demo examplem, host project and managed project are one project. The project is linked to 
-# namespace alpha
+# namespace stockholm
 
 
 if [[ -z "$PROJECT_ID" ]]; then
@@ -20,8 +20,8 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
     exit 1
 fi
 
-export SERVICE_ACCOUNT_NAME="kcc-sa-alpha"
-export MANAGED_NAMESPACE="alpha"
+export SERVICE_ACCOUNT_NAME="kcc-sa-stockholm"
+export MANAGED_NAMESPACE="stockholm"
 
 
 setup_sa_for_kcc () {
@@ -46,11 +46,11 @@ setup_sa_for_kcc () {
 create_git_secret () {
     CLUSTER_NAME=$1 
     
-    echo "********** Creating Secret in alpha namespace to grant Config Sync access to your repos: $CLUSTER_NAME ***************"
+    echo "********** Creating Secret in stockholm namespace to grant Config Sync access to your repos: $CLUSTER_NAME ***************"
     kubectl ctx $CLUSTER_NAME
 
     kubectl create secret generic git-creds \
-        --namespace="alpha" \
+        --namespace="team-stockholm" \
         --from-literal=username=$GITHUB_USERNAME \
         --from-literal=token=$GITHUB_TOKEN
 }

@@ -4,7 +4,7 @@ metadata:
   # There can be at most one RepoSync object per namespace.
   # To enforce this restriction, the object name must be repo-sync. 
   name: repo-sync
-  namespace: alpha
+  namespace: stockholm
   annotations: 
     configsync.gke.io/cluster-name-selector: admin
 spec:
@@ -15,7 +15,7 @@ spec:
     repo: https://github.com/600lyy/Build-KRM-Platform.git
     # If you move the configs to a different branch, update the branch here
     branch: main
-    dir: gcp-resources/alpha
+    dir: gcp-resources/stockholm
     auth: token
     # Refer to a Secret you create to hold the private key, cookiefile, or token.
     secretRef:

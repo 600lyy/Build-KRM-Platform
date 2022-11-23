@@ -2,12 +2,12 @@
  apiVersion: rbac.authorization.k8s.io/v1
  metadata:
    name: repo-sync-rolebinding
-   namespace: alpha
+   namespace: stockholm
    annotations: 
     configsync.gke.io/cluster-name-selector: admin
  subjects:
  - kind: ServiceAccount
-   name: ns-reconciler-alpha
+   name: ns-reconciler-stockholm
    namespace: config-management-system
  roleRef:
    kind: ClusterRole
