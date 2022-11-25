@@ -172,6 +172,23 @@ Verify that KCC created a KSA for your target namespace
 kubectl get serviceaccount/cnrm-controller-manager-stockholm  -n cnrm-system
 ```
 
+## Spin up a GCP resource
+
+Congrates! Now your platform is ready to support spin up gcp resources. Let's go ahead create a simple sql instance
+```bash
+# Make sure you update the right GSA in the configconnectorcontext.yaml
+cp backups/cloudsql.yaml gcp-resources/stockholm 
+
+git add .
+git commit -m "spin up a sql instance"
+git push -u orighin main
+```
+
+### What is happening in the backend?
+First when you place a resource yaml in the folder that your RepoSync is syncing from, Config Sync (RepoSync) will create a kuberentes custom resources (based on cloudsql.yaml) in the admin cluster. 
+
+KCC operator is watching over this CRD. And in the next reconciling loop, KCC will execute the actuation to spin up a gcp resources by calling terraform google provider.
+
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
 
