@@ -50,7 +50,7 @@ create_git_secret () {
     kubectl ctx $CLUSTER_NAME
 
     kubectl create secret generic git-creds \
-        --namespace="team-stockholm" \
+        --namespace="stockholm" \
         --from-literal=username=$GITHUB_USERNAME \
         --from-literal=token=$GITHUB_TOKEN
 }
