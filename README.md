@@ -55,9 +55,7 @@ cp backups/admin.yaml backups/stockholm.yaml backups/newyork.yaml namespaces
 Git commit and push it to the remote repo
 ```bash
 git add .
-
 git commit -m "addning namespaces across clusters"
-
 git push -u orighin main
 ```
 
@@ -147,7 +145,13 @@ Should display
 
 This KSA will be used by the RepoSync. You need to declar a rolebinding for the KSA that grants it permission to manage objects in your target namespace
 ```bash
+# Create a subdirectory under the root folder /cluster. Make sure you update the rolebidning.yaml with the right KSA
+mkdir -p cluster/reposync-iam
+cp backups/reposync-iam/stockholm-rolebinding.yaml cluster/reposync-iam
 
+git add .
+git commit -m "declaring rolebinding for the RepoSync stockholm"
+git push -u orighin main
 ```
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
