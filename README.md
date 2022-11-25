@@ -87,9 +87,11 @@ Should display "SYNCD" for all clusters with the latest commit SHA.
 
 
 ## Config Connector (KCC)
+
 KCC is a Kubernetes add-on that allows customers to manage GCP resources, such as CloudSQL or Cloud Storage, through KRM. See [Overview](*https://cloud.google.com/config-connector/docs/overview)
 
 ### Install KCC on the admin cluster and enable namespaced mode
+
 ```bash
  ./install-config-connector.sh
 
@@ -98,6 +100,7 @@ kubectl apply -f configconnector.yaml
 ```
 
 ### Create Googel Service Account and GKE Workload Identify in your target project
+
 KCC is installed in one host project. When KCC operates with namespaced mode enabled, it supports mananaging mulitple projects (target projects), each with their own Goolge Service Account. See [details](*https://cloud.google.com/config-connector/docs/concepts/installation-types#namespaced)
 
 This demo will show you how to use KCC to manage your GCP resources in the namespace "stockholm".
@@ -111,6 +114,7 @@ After that, you create a GKE WI that's associated with the GSA, and KCC will use
 ```
 
 ### Create a new RepoSync to sync from the folder containing your gcp resource yamls
+
 You want to spin up GCP resources in one namespace and one target project. Thus you need a RepoSync to watch over namespaced config
 
 In this demo, we create a RepoSync for the "stockholm" namespace
@@ -122,9 +126,29 @@ git commit -m "creating a RepoSync for stockholm"
 git push -u orighin main
 ```
 
+** Verify the RepoSync **
+```bash
+kubectl ctx admin
+kubectl get reposyncs.configsync.gke.io repo-sync -n stockholm -o yaml
+```
 
+should show the sourcePath
+- sourcePath: /repo/source/4002dd82100320fee517d02335794fbeefb020bd/gcp-resources/stockholm
 
+### In the root repository, declare a Kubernetes RoleBinding that grants RepoSync permissions to mange k8s objects in the namespace
 
+Config Sync automatically creates a KSA when a new RepoSync config is synced to the cluster. See [details](*https://cloud.google.com/anthos-config-management/docs/how-to/multiple-repositories#manage-namespace-repos-in-root)
+```bash
+kubectl get sa -n config-management-system
+```
+
+Should display
+- ns-reconciler-stockholm
+
+This KSA will be used by the RepoSync. You need to declar a rolebinding for the KSA that grants it permission to manage objects in your target namespace
+```bash
+
+```
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
 
