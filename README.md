@@ -184,10 +184,15 @@ git commit -m "spin up a sql instance"
 git push -u orighin main
 ```
 
-### What is happening in the backend?
+Verify the sql instance is creatd
+```bash
+gcloud sql instances list
+```
+
+### What is happening in the background?
 First when you place a resource yaml in the folder that your RepoSync is syncing from, Config Sync (RepoSync) will create a kuberentes custom resources (based on cloudsql.yaml) in the admin cluster. 
 
-KCC operator is watching over this CRD. And in the next reconciling loop, KCC will execute the actuation to spin up a gcp resources by calling terraform google provider.
+KCC operator is watching over this CRD. And in the next reconciling loop, KCC will pick up this change and execute the actuation to spin up a gcp resources by calling terraform google provider.
 
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
@@ -210,14 +215,14 @@ stockholm   Active   1s
 You can see Config Sync re-creates the namespace on your behalf, to make sure the consistency between your current state with desired state across all clusters.
 
 
-## Repo Hierarchy
+## The final Repo Hierarchy
 **Central Root Repo (`Build-KRM-Platform/cluster/`):**
 ```bash
 .
 ├── apply-spec.yaml
 ├── backups
 │   ├── admin.yaml
-│   ├── configconnectorcontext.yaml
+│   ├── cloudsql.yaml
 │   ├── install.sh
 │   ├── newyork.yaml
 │   ├── reposync-iam
@@ -226,13 +231,21 @@ You can see Config Sync re-creates the namespace on your behalf, to make sure th
 │   ├── reposync-stockholm.yaml
 │   └── stockholm.yaml
 ├── cluster
+│   ├── reposync-iam
+│   │   ├── stockholm-configconnectorcontext.yaml
+│   │   └── stockholm-rolebinding.yaml
+│   ├── reposync-stockholm.yaml
 │   └── rootsync.yaml
 ├── configconnector.yaml
 ├── gcp-resources
 │   └── stockholm
+│       └── cloudsql.yaml
 ├── install-config-connector.sh
 ├── install.sh
 ├── namespaces
+│   ├── admin.yaml
+│   ├── newyork.yaml
+│   └── stockholm.yaml
 ├── README.md
 └── setup-iam-for-kcc-ns-sthlm.sh
 ```
