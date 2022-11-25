@@ -145,14 +145,33 @@ Should display
 
 This KSA will be used by the RepoSync. You need to declar a rolebinding for the KSA that grants it permission to manage objects in your target namespace
 ```bash
-# Create a subdirectory under the root folder /cluster. Make sure you update the rolebidning.yaml with the right KSA
+# Create a subdirectory under the root folder /cluster.
 mkdir -p cluster/reposync-iam
+# Make sure you update the rolebidning.yaml with the right KSA
 cp backups/reposync-iam/stockholm-rolebinding.yaml cluster/reposync-iam
 
 git add .
 git commit -m "declaring rolebinding for the RepoSync stockholm"
 git push -u orighin main
 ```
+
+### Delcare a KCC context for your target project
+
+To create GCP resources in your target project, you need to declare a context in KCC for each target project. 
+```bash
+# Make sure you update the right GSA in the configconnectorcontext.yaml
+cp backups/reposync-iam/stockholm-configconnectorcontext.yaml cluster/reposync-iam
+
+git add .
+git commit -m "declaring a context in KCC for watching the namespce stockholm"
+git push -u orighin main
+```
+
+Verify that KCC created a KSA for your target namespace
+```bash
+kubectl get serviceaccount/cnrm-controller-manager-stockholm  -n cnrm-system
+```
+
 ## Attempt to delete a namespace from the cluster
 When an user attempts to delete a resource managed by Config Sync, Config Sync protects the resource from errant kubectl command.
 
