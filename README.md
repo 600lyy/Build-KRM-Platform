@@ -12,6 +12,7 @@ In this demo, we choose to control root and namespace repos in a central root re
 
 1. Follow the [Parepare your lcoal enviroment](https://cloud.google.com/anthos-config-management/docs/how-to/installing-config-sync#prerequisites) to set up your GKE clusters
 1. Fork this repo to you Git and grant access to Git by generating a git token
+1. Install gcloud, kubectrl and [kubectl ctx plugin](*https://github.com/ahmetb/kubectx#installation) 
 
 ## Install Config Sync
 Install and bootstrap Config Sync on your GKE clusters by runnning `install.sh`. Before that, you need to update the cluster name and zone location in the file.
