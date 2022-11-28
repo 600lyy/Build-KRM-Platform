@@ -28,13 +28,19 @@ Should you need more RootSync, creat a RootSync object with a unique name and pl
 RootSync let you sync cluster-scoped and namespace-scoped configs
 
 In this demo, we create 2 RootSync
-1. The RootSync that watches /cluster folder. It is created from the Config Sync installation and bootstraping.
+1. The RootSync that watches /cluster folder. It is created from the Config Sync installation and bootstraping. You can specify a root folder in **apply.sepc.yaml**
 1. The RootSync that watches /namespaces folder. We create a RootSync object from a yaml spec and place the yaml under the /cluster folder.
+
+```bash
+cp backups/rootsync.yaml cluster/
+
+git add .
+git commit -m "declar a RootSync syncing from the folder of /cluster"
+git push -u orighin main
+```
 
 **RepoSync**
 RepoSync is optinal and can contain namespace-scoped configs synced to a particular namespace across you clusters.
-
-For each namespace, we create a RepoSync to sync from a folder under /gcp-projects
 
 ## Pods
 Config Sync runs on every cluster. It manages three types of Pods:
@@ -111,9 +117,11 @@ After that, you create a GKE WI that's associated with the GSA, and KCC will use
 ./setup-iam-for-kcc-ns-sthlm.sh
 ```
 
-### Create a new RepoSync to sync from the folder containing your gcp resource yamls
+### Create a RepoSync to sync from the folder containing your gcp resource yamls
 
 You want to spin up GCP resources in one namespace and one target project. Thus you need a RepoSync to watch over namespaced config
+
+For each namespace, you can create a RepoSync to sync from a folder under /gcp-projects
 
 In this demo, we create a RepoSync for the "stockholm" namespace
 ```bash
