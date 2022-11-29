@@ -14,6 +14,10 @@ In this demo, we choose to control root and namespace repos in a central root re
 1. Fork this repo to you Git and grant access to Git by generating a git token
 1. Install gcloud, kubectrl and [kubectl ctx plugin](*https://github.com/ahmetb/kubectx#installation) 
 
+**Note**
+
+For existing gcloud CLI installations, make sure to set the compute/region and compute/zone properties. By setting default locations, you can avoid errors in gcloud CLI like the following: One of [--zone, --region] must be supplied: Please specify location.
+
 ## Install Config Sync
 Install and bootstrap Config Sync on your GKE clusters by runnning `install.sh`. Before that, you need to update the cluster name and zone location in the file.
 Besides Config Sync, `install.sh` also generates a secret that's linked to your git token to authenticate the config sync to your Git repos
@@ -223,6 +227,41 @@ stockholm   Active   1s
 
 You can see Config Sync re-creates the namespace on your behalf, to make sure the consistency between your current state with desired state across all clusters.
 
+
+## Troubleshooting ##
+If you might encounter issues during the demo, this section describes troubleshooting techniques that you can use to troubleshoot Config Sync and KCC.
+
+## Config Sync ##
+ ```bash
+ # check anthos status. All clusters should show status "SYNCED"
+ gcloud beta container hub config-management status
+
+ # check pod status of RootSync. SYNCERRORCOUNT should be blank
+ kubectl get rootsyncs.configsync.gke.io -n config-management-system
+
+ # Check the status of RepoySync. ErrorSummary shows the errors
+ kubectl get reposyncs.configsync.gke.io repo-sync -n stockholm -o jsonpath='{.status.sync}'
+ ```
+
+## KCC ##
+ ```bash
+ # Check if KCC controller is up and running. Replace NAMESPACE
+ kubectl wait -n cnrm-system \                                                                                                            
+    --for=condition=Ready pod \
+    -l cnrm.cloud.google.com/component=cnrm-controller-manager \
+    -l cnrm.cloud.google.com/scoped-namespace=NAMESPACE
+
+# Expected output
+pod/cnrm-controller-manager-ce0dt9kgkgt2fd0ugbbg-0 condition met
+
+# Check KCC logs. Replace NAMESPACE
+kubectl logs -n cnrm-system \                
+    -l cnrm.cloud.google.com/scoped-namespace=NAMESPACE \
+    -l cnrm.cloud.google.com/component=cnrm-controller-manager \
+    -c manager
+
+# Check error reasons: https://cloud.google.com/config-connector/docs/troubleshooting
+```
 
 ## The final Repo Hierarchy
 **Central Root Repo (`Build-KRM-Platform/cluster/`):**
