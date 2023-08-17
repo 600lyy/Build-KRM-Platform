@@ -170,7 +170,13 @@ git push -u orighin main
 
 ### Delcare a KCC context for your target project
 
-To create GCP resources in your target project, you need to declare a context in KCC for each target project. 
+To create GCP resources in your target project, you need to declare a namespaced context in KCC for each target project. 
+
+This way, KCC links the namespace with one GCP project (and manages the project using the newly created service account)
+
+Upon the creation of this context, KCC creates a new KSA, and then launches a pod to run as this KSA.
+
+When KCC runs in namespaced mode, KCC creates one pod per namespace within the cnrm-system namespace.
 ```bash
 # Make sure you update the right GSA in the configconnectorcontext.yaml
 cp backups/reposync-iam/stockholm-configconnectorcontext.yaml cluster/reposync-iam
